@@ -15,6 +15,15 @@ objects:
         interval: 10m
         limit: 0
         rules:
+          - record: cpu_rate:10m
+            expr: |
+              rate(system_cpu_logical_count[10m])
+          - record: cpu_count:10m
+            expr: |
+              count_over_time(system_cpu_logical_count[10m])
+          - record: cpu_usage:10m
+            expr: |
+              cpu_rate:10m / cpu_count:10m
           - record: min_cpu_logical_count:10m
             expr: |
               group without (swatch_placeholder_label) (
